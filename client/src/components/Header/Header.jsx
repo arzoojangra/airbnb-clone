@@ -79,7 +79,7 @@ function Header() {
 
           <Menu as="div" className="relative ml-3 me-3">
             <div>
-              <Menu.Button className="flex items-center gap-2 border border-gray-300 rounded-full px-2 py-1 me-2">
+              <Menu.Button className="flex items-center gap-2 border border-gray-300 rounded-full px-2 py-2 me-2 hover:shadow-md shadow-gray-300">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
