@@ -9,7 +9,7 @@ function classNames(...classes) {
 function Header() {
   return (
     <>
-      <header className="flex justify-between py-2 border-b">
+      <header className="flex justify-between p-3 border-b">
         <div className="flex items-center gap-1 text-primary ms-5">
           <NavLink to="/">
             <svg

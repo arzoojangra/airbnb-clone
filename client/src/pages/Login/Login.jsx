@@ -1,15 +1,20 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
+import axios from "axios"
 
 function Login(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
+  const LoginUser = (e) => {
     e.preventDefault();
 
-    console.log("email", email);
-    console.log("password", password);
+    console.log("email: ", email);
+    console.log("password: ", password);
+
+    axios.get("http://localhost:4000/test")
+
+    
   };
 
   return (
@@ -20,7 +25,7 @@ function Login(props) {
         <form
           className="max-w-md mx-auto"
           onSubmit={(e) => {
-            handleSubmit(e);
+            LoginUser(e);
           }}
         >
           <input

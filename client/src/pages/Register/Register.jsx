@@ -50,7 +50,7 @@ function Register(props) {
             }}
           />
           <button type="submit" className="primary">
-            Login
+            Register
           </button>
           <div className="text-center py-2 text-gray-500">
             Already have an account?
