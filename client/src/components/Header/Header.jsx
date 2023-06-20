@@ -1,12 +1,15 @@
 import { NavLink } from "react-router-dom";
-import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { Fragment } from "react";
+import { Menu, Transition } from "@headlessui/react";
+import { Fragment, useContext } from "react";
+import { UserContext } from "../../Context/UserContext";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 function Header() {
+  const { user } = useContext(UserContext);
+
   return (
     <>
       <header className="flex justify-between p-3 border-b">
@@ -106,6 +109,7 @@ function Header() {
                     clipRule="evenodd"
                   />
                 </svg>
+                {!!user && <div> {user.fName} </div>}
               </Menu.Button>
             </div>
             <Transition

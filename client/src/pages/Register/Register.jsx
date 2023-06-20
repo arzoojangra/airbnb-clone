@@ -1,17 +1,30 @@
+import axios from "axios";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 function Register(props) {
-  const [name, setName] = useState("");
+  const [fName, setfName] = useState("");
+  const [lName, setlName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
+  const RegisterUser = async (e) => {
     e.preventDefault();
 
-    console.log("name : ", name);
-    console.log("email : ", email);
-    console.log("password : ", password);
+    // console.log("email: ", email);
+    // console.log("password: ", password);
+
+    try {
+      await axios.post("/register", {
+        fName,
+        lName,
+        email,
+        password,
+      });
+      alert("Registration successful! You can now login!");
+    } catch (error) {
+      alert("Something went wrong!");
+    }
   };
 
   return (
@@ -22,15 +35,23 @@ function Register(props) {
         <form
           className="max-w-md mx-auto"
           onSubmit={(e) => {
-            handleSubmit(e);
+            RegisterUser(e);
           }}
         >
           <input
             type="text"
-            placeholder="Your Name Here"
-            value={name}
+            placeholder="First Name Here"
+            value={fName}
             onChange={(e) => {
-              setName(e.target.value);
+              setfName(e.target.value);
+            }}
+          />
+          <input
+            type="text"
+            placeholder="Last Name Here"
+            value={lName}
+            onChange={(e) => {
+              setlName(e.target.value);
             }}
           />
           <input

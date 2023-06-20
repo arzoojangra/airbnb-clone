@@ -1,21 +1,39 @@
-import { useState } from "react";
-import { NavLink } from "react-router-dom";
-import axios from "axios"
+import { useContext, useState } from "react";
+import { NavLink, Navigate } from "react-router-dom";
+import axios from "axios";
+import { UserContext } from "../../Context/UserContext";
 
 function Login(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [redirect, setRedirect] = useState(false);
+  const { setUser } = useContext(UserContext);
 
-  const LoginUser = (e) => {
+  const LoginUser = async (e) => {
     e.preventDefault();
 
-    console.log("email: ", email);
-    console.log("password: ", password);
+    // console.log("email: ", email);
+    // console.log("password: ", password);
 
-    axios.get("http://localhost:4000/test")
+    try {
+      const { data } = await axios.post("/login", {
+        email,
+        password,
+      });
 
-    
+      setUser(data);
+      console.log(data);
+
+      alert("Login successfull!");
+      setRedirect(true);
+    } catch (error) {
+      alert("Something went wrong!");
+    }
   };
+
+  if (redirect) {
+    return <Navigate to={"/"} />;
+  }
 
   return (
     <div className="mt-20 grow flex items-center justify-around">
