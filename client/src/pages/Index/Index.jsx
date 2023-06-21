@@ -1,7 +1,3 @@
-import React from "react";
-
-function Index(props) {
+export default function Index(props) {
   return <div>Index</div>;
 }
-
-export default Index;

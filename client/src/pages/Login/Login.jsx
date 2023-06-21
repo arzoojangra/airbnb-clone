@@ -3,7 +3,7 @@ import { NavLink, Navigate } from "react-router-dom";
 import axios from "axios";
 import { UserContext } from "../../Context/UserContext";
 
-function Login(props) {
+export default function Login(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [redirect, setRedirect] = useState(false);
@@ -76,5 +76,3 @@ function Login(props) {
     </div>
   );
 }
-
-export default Login;

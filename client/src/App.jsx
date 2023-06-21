@@ -6,11 +6,12 @@ import Index from "./pages/Index/Index";
 import Register from "./pages/Register/Register";
 import axios from "axios";
 import { UserContextProvider } from "./Context/UserContext";
+import Account from "./pages/Account/Account";
 
 axios.defaults.baseURL = "http://localhost:4000";
 axios.defaults.withCredentials = true;
 
-function App() {
+export default function App() {
   return (
     <UserContextProvider>
       <Routes>
@@ -18,10 +19,10 @@ function App() {
           <Route index element={<Index />} />
           <Route path="/login" element={<Login />} />
           <Route path="/sign-up" element={<Register />} />
+          <Route path="/account/:subPage?" element={<Account />} />
+          <Route path="/account/:subPage/:action" element={<Account />} />
         </Route>
       </Routes>
     </UserContextProvider>
   );
 }
-
-export default App;

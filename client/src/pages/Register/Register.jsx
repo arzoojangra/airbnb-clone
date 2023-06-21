@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
-function Register(props) {
+export default function Register(props) {
   const [fName, setfName] = useState("");
   const [lName, setlName] = useState("");
   const [email, setEmail] = useState("");
@@ -84,5 +84,3 @@ function Register(props) {
     </div>
   );
 }
-
-export default Register;

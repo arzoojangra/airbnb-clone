@@ -7,31 +7,32 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-function Header() {
+export default function Header() {
   const { user } = useContext(UserContext);
 
   return (
     <>
       <header className="flex justify-between p-3 border-b">
-        <div className="flex items-center gap-1 text-primary ms-5">
-          <NavLink to="/">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={2}
-              stroke="currentColor"
-              className="w-6 h-6 font-bold"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"
-              />
-            </svg>
-          </NavLink>
-          <span className="font-bold text-xl">airbnb</span>
-        </div>
+        <NavLink to="/" className="flex items-center gap-1 text-primary ms-5">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={2}
+            stroke="currentColor"
+            className="w-6 h-6 font-bold"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"
+            />
+          </svg>
+
+          <span to="/" className="font-bold text-xl">
+            airbnb
+          </span>
+        </NavLink>
 
         <div />
 
@@ -125,26 +126,26 @@ function Header() {
                 <Menu.Item>
                   {({ active }) => (
                     <NavLink
-                      to="/sign-up"
+                      to={user ? "/account" : "/sign-up"}
                       className={classNames(
                         active ? "bg-gray-100" : "",
                         "block px-4 py-2 text-sm text-gray-700 font-bold my-1"
                       )}
                     >
-                      Sign Up
+                      {user ? "My Account" : "Sign Up"}
                     </NavLink>
                   )}
                 </Menu.Item>
                 <Menu.Item>
                   {({ active }) => (
                     <NavLink
-                      to="/login"
+                      to={user ? "/" : "/login"}
                       className={classNames(
                         active ? "bg-gray-100" : "",
                         "block px-4 py-2 text-sm text-gray-700 border-b my-1"
                       )}
                     >
-                      Login
+                      {user ? "Logout" : "Login"}
                     </NavLink>
                   )}
                 </Menu.Item>
@@ -180,5 +181,3 @@ function Header() {
     </>
   );
 }
-
-export default Header;
