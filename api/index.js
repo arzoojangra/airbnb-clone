@@ -6,8 +6,11 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const imageDownloader = require("image-downloader");
+const multer = require("multer");
+const fs = require("fs");
 
 const User = require("./models/User");
+const Place = require("./models/Place");
 
 const app = express();
 
@@ -120,7 +123,64 @@ app.post("/upload-by-link", async (req, res) => {
     dest: __dirname + "/uploads/" + newName,
   });
 
-  res.json(__dirname + "/uploads/" + newName);
+  res.json(newName);
+});
+
+// Upload image
+
+const photosMiddleware = multer({ dest: "uploads/" });
+
+app.post("/upload", photosMiddleware.array("photos", 100), async (req, res) => {
+  const uploadedFiles = [];
+
+  for (let i = 0; i < req.files.length; i++) {
+    const { path, originalname } = req.files[i];
+
+    const parts = originalname.split(".");
+    const ext = parts[parts.length - 1];
+    const newPath = path + "." + ext;
+
+    fs.renameSync(path, newPath);
+    uploadedFiles.push(newPath.replace("uploads/", ""));
+  }
+
+  res.json(uploadedFiles);
+});
+
+// add new place
+
+app.post("/addPlace", async (req, res) => {
+  const { token } = req.cookies;
+  const {
+    title,
+    address,
+    addedPhotos,
+    description,
+    perks,
+    extraInfo,
+    checkIn,
+    checkOut,
+    maxGuests,
+  } = req.body;
+
+  jwt.verify(token, jwtKey, {}, async (err, userData) => {
+    if (err) throw err;
+
+    const addedPlace = await Place.create({
+      owner: userData.id,
+      title,
+      address,
+      photos: addedPhotos,
+      description,
+      perks,
+      extraInfo,
+      checkIn,
+      checkOut,
+      maxGuests,
+    });
+
+    res.json(addedPlace);
+  });
 });
 
 app.listen(4000);
