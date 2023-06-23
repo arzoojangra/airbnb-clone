@@ -1,16 +1,21 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
-export default function AccountNavBar({ subPage }) {
+export default function AccountNavBar() {
+  const { pathname } = useLocation();
+
+  let subPage = pathname.split("/")?.[2];
+  if (subPage === undefined) subPage = "profile";
+
   return (
     <>
       <nav className="w-full flex justify-center my-8  gap-2">
         <NavLink
           className={`inline-flex items-center gap-1 py-2 px-6 rounded-full ${
-            subPage == "profile"
+            subPage === "profile"
               ? "bg-primary text-white rounded-full"
               : "bg-gray-200"
           }`}
-          to="/account/profile"
+          to="/account"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -30,7 +35,7 @@ export default function AccountNavBar({ subPage }) {
         </NavLink>
         <NavLink
           className={`inline-flex items-center gap-1 py-2 px-6 rounded-full ${
-            subPage == "bookings"
+            subPage === "bookings"
               ? "bg-primary text-white rounded-full"
               : "bg-gray-200"
           }`}
@@ -54,7 +59,7 @@ export default function AccountNavBar({ subPage }) {
         </NavLink>
         <NavLink
           className={`inline-flex itmes-center gap-1 py-2 px-6 rounded-full ${
-            subPage == "places" ? "bg-primary text-white " : "bg-gray-200"
+            subPage === "places" ? "bg-primary text-white " : "bg-gray-200"
           }`}
           to="/account/places"
         >

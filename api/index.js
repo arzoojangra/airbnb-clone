@@ -149,7 +149,7 @@ app.post("/upload", photosMiddleware.array("photos", 100), async (req, res) => {
 
 // add new place
 
-app.post("/addPlace", async (req, res) => {
+app.post("/addPlace", (req, res) => {
   const { token } = req.cookies;
   const {
     title,
@@ -181,6 +181,76 @@ app.post("/addPlace", async (req, res) => {
 
     res.json(addedPlace);
   });
+});
+
+// fetch all places added by a particular user
+
+app.get("/fetchUserPlaces", (req, res) => {
+  const { token } = req.cookies;
+
+  jwt.verify(token, jwtKey, {}, async (err, userData) => {
+    if (err) throw err;
+
+    const { id } = userData;
+
+    res.json(await Place.find({ owner: id }));
+  });
+});
+
+// fetch particular place
+
+app.get("/fetchPlace/:id", async (req, res) => {
+  const { id } = req.params;
+
+  res.json(await Place.findById(id));
+});
+
+// update particular place
+
+app.put("/updatePlace", async (req, res) => {
+  const { token } = req.cookies;
+
+  const {
+    id,
+    title,
+    address,
+    addedPhotos,
+    description,
+    perks,
+    extraInfo,
+    checkIn,
+    checkOut,
+    maxGuests,
+  } = req.body;
+
+  jwt.verify(token, jwtKey, {}, async (err, userData) => {
+    if (err) throw err;
+
+    const placeData = await Place.findById(id);
+
+    if (userData.id == placeData.owner.toString()) {
+      placeData.set({
+        title,
+        address,
+        photos: addedPhotos,
+        description,
+        perks,
+        extraInfo,
+        checkIn,
+        checkOut,
+        maxGuests,
+      });
+
+      placeData.save();
+      res.json("save ok");
+    }
+  });
+});
+
+// fetch all places
+
+app.get("/fetchPlaces", async (req, res) => {
+  res.json(await Place.find());
 });
 
 app.listen(4000);

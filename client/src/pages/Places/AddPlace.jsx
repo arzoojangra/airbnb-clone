@@ -1,10 +1,13 @@
 import Perks from "./Perks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import UploadPhoto from "./UploadPhoto";
 import AccountNavBar from "../Account/AccountNavBar";
+import { Navigate, useParams } from "react-router-dom";
 
 export default function AddPlace() {
+  const { id } = useParams();
+
   const [title, setTitle] = useState("");
   const [address, setAddress] = useState("");
   const [addedPhotos, setAddedPhotos] = useState([]);
@@ -14,6 +17,25 @@ export default function AddPlace() {
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [maxGuests, setMaxGuests] = useState("");
+  const [redirect, setRedirect] = useState(false);
+
+  useEffect(() => {
+    if (!id) return;
+
+    axios.get("/fetchPlace/" + id).then((response) => {
+      const { data } = response;
+
+      setTitle(data.title);
+      setAddress(data.address);
+      setAddedPhotos(data.photos);
+      setDescription(data.description);
+      setPerks(data.perks);
+      setExtraInfo(data.extraInfo);
+      setCheckIn(data.checkIn);
+      setCheckOut(data.checkOut);
+      setMaxGuests(data.maxGuests);
+    });
+  }, [id]);
 
   function inputHeader(text) {
     return <h2 className="text-2xl mt-4 ms-1">{text}</h2>;
@@ -32,10 +54,10 @@ export default function AddPlace() {
     );
   }
 
-  async function addNewPlace(ev) {
+  async function savePlace(ev) {
     ev.preventDefault();
 
-    await axios.post("/addPlace", {
+    const placeData = {
       title,
       address,
       addedPhotos,
@@ -45,14 +67,35 @@ export default function AddPlace() {
       checkIn,
       checkOut,
       maxGuests,
-    });
+    };
+
+    if (id) {
+      // update place
+      await axios.put("/updatePlace", {
+        id,
+        ...placeData,
+      });
+
+      setRedirect(true);
+    } else {
+      // add new place
+      await axios.post("/addPlace", {
+        placeData,
+      });
+
+      setRedirect(true);
+    }
+  }
+
+  if (redirect) {
+    return <Navigate to="/account/places" />;
   }
 
   return (
     <>
       <AccountNavBar />
       <div className="px-20">
-        <form onSubmit={addNewPlace}>
+        <form onSubmit={savePlace}>
           {preInput(
             "Title",
             "Title for your place, should be short and attractive"

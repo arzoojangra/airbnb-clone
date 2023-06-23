@@ -3,7 +3,7 @@ import Header from "../Header/Header";
 
 export default function Layout(props) {
   return (
-    <div>
+    <div className="min-h-screen">
       <Header />
       <Outlet />
     </div>

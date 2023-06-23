@@ -60,9 +60,12 @@ export default function Header() {
         </div>
 
         <div className="flex items-center gap-1">
-          <button className="hover:bg-gray-100 rounded-full px-3 py-2">
+          <NavLink
+            to="/account/places/new"
+            className="hover:bg-gray-100 rounded-full px-3 py-2"
+          >
             Airbnb your home
-          </button>
+          </NavLink>
 
           <button className="hover:bg-gray-100 rounded-full px-3 py-2">
             <svg
@@ -152,6 +155,7 @@ export default function Header() {
                 <Menu.Item>
                   {({ active }) => (
                     <NavLink
+                      to="/account/places/new"
                       className={classNames(
                         active ? "bg-gray-100" : "",
                         "block px-4 py-2 text-sm text-gray-700 my-1"
