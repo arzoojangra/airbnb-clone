@@ -29,7 +29,6 @@ app.use(
 );
 
 mongoose.connect(process.env.MONGO_URL); //.env
-// console.log(process.env.MONGO_URL);
 
 app.get("/test", (req, res) => {
   res.json("test ok");
@@ -161,6 +160,7 @@ app.post("/addPlace", (req, res) => {
     checkIn,
     checkOut,
     maxGuests,
+    price,
   } = req.body;
 
   jwt.verify(token, jwtKey, {}, async (err, userData) => {
@@ -177,6 +177,7 @@ app.post("/addPlace", (req, res) => {
       checkIn,
       checkOut,
       maxGuests,
+      price,
     });
 
     res.json(addedPlace);
@@ -221,6 +222,7 @@ app.put("/updatePlace", async (req, res) => {
     checkIn,
     checkOut,
     maxGuests,
+    price,
   } = req.body;
 
   jwt.verify(token, jwtKey, {}, async (err, userData) => {
@@ -239,6 +241,7 @@ app.put("/updatePlace", async (req, res) => {
         checkIn,
         checkOut,
         maxGuests,
+        price,
       });
 
       placeData.save();

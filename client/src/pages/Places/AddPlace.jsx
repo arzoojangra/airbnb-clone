@@ -17,6 +17,7 @@ export default function AddPlace() {
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [maxGuests, setMaxGuests] = useState("");
+  const [price, setPrice] = useState("");
   const [redirect, setRedirect] = useState(false);
 
   useEffect(() => {
@@ -34,6 +35,7 @@ export default function AddPlace() {
       setCheckIn(data.checkIn);
       setCheckOut(data.checkOut);
       setMaxGuests(data.maxGuests);
+      setPrice(data.price);
     });
   }, [id]);
 
@@ -67,6 +69,7 @@ export default function AddPlace() {
       checkIn,
       checkOut,
       maxGuests,
+      price,
     };
 
     if (id) {
@@ -149,7 +152,7 @@ export default function AddPlace() {
             "Add check in and check out timings, remember to have some time window to clean the room in between guests arrive."
           )}
 
-          <div className="grid gap-2 sm:grid-cols-3">
+          <div className="grid gap-2 grid-cols-2 md:grid-cols-4">
             <div>
               <h3 className="mt-2 mb-1 ms-2">Check in time</h3>
               <input
@@ -182,6 +185,18 @@ export default function AddPlace() {
                 value={maxGuests}
                 onChange={(ev) => {
                   setMaxGuests(ev.target.value);
+                }}
+              />
+            </div>
+
+            <div>
+              <h3 className="mt-2 mb-1 ms-2">Price per Night</h3>
+              <input
+                type="number"
+                placeholder="1000"
+                value={price}
+                onChange={(ev) => {
+                  setPrice(ev.target.value);
                 }}
               />
             </div>

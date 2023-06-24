@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function Index(props) {
   const [places, setPlaces] = useState([]);
@@ -7,7 +8,7 @@ export default function Index(props) {
   useEffect(() => {
     axios.get("/fetchPlaces").then((response) => {
       setPlaces([...response.data, ...response.data, ...response.data]);
-      // console.log();
+      console.log(response.data);
     });
   }, []);
 
@@ -15,7 +16,11 @@ export default function Index(props) {
     <div className="grid gap-6 gap-y-8 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-10">
       {places.length > 0 &&
         places.map((place) => (
-          <div key={place._id} className="rounded-xl">
+          <Link
+            to={"/place/" + place._id}
+            key={place._id}
+            className="rounded-xl"
+          >
             <div className="rounded flex">
               {place.photos ? (
                 <img
@@ -28,9 +33,17 @@ export default function Index(props) {
               )}
             </div>
 
-            <div className="font-bold text-sm mt-3 mb-1">{place.title}</div>
-            <div className="text-sm text-gray-500">{place.address}</div>
-          </div>
+            <div className="ms-1">
+              <div className="font-bold text-sm mt-3 mb-1">{place.address}</div>
+              <div className="text-sm text-gray-500 truncate">
+                {place.title}
+              </div>
+              <div className="font-bold text-sm flex items-center">
+                <span className="text-base p-0 me-1">{"\u20B9"}</span>
+                {place.price} per night
+              </div>
+            </div>
+          </Link>
         ))}
     </div>
   );
