@@ -11,6 +11,7 @@ const fs = require("fs");
 
 const User = require("./models/User");
 const Place = require("./models/Place");
+const Booking = require("./models/Booking");
 
 const app = express();
 
@@ -254,6 +255,44 @@ app.put("/updatePlace", async (req, res) => {
 
 app.get("/fetchPlaces", async (req, res) => {
   res.json(await Place.find());
+});
+
+// book a place
+
+app.post("/booking", async (req, res) => {
+  const { place, checkIn, checkOut, numberOfGuests, name, phone, price } =
+    req.body;
+
+  jwt.verify(token, jwtKey, {}, async (err, userData) => {
+    if (err) throw err;
+
+    const { id } = userData;
+    const bookingInfo = await Booking.create({
+      place,
+      person: id,
+      checkIn,
+      checkOut,
+      numberOfGuests,
+      name,
+      phone,
+      price,
+    });
+    res.json(bookingInfo);
+  });
+});
+
+// get particular user's bookings
+
+app.get("/bookings", async (req, res) => {
+  const { token } = req.cookies;
+
+  jwt.verify(token, jwtKey, {}, async (err, userData) => {
+    if (err) throw err;
+
+    const { id } = userData;
+
+    res.json(await Booking.find({ person: id }));
+  });
 });
 
 app.listen(4000);

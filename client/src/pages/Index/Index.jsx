@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import PlaceImg from "../../components/Images/PlaceImg";
 
 export default function Index(props) {
   const [places, setPlaces] = useState([]);
@@ -22,6 +23,7 @@ export default function Index(props) {
             className="rounded-xl"
           >
             <div className="rounded flex">
+              {/* <PlaceImg place = {place} classname="rounded-2xl object-cover aspect-square" index = {0}/> */}
               {place.photos ? (
                 <img
                   className="rounded-2xl object-cover aspect-square"

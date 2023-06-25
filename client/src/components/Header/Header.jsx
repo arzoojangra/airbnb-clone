@@ -12,7 +12,7 @@ export default function Header() {
 
   return (
     <>
-      <header className="flex justify-between p-3 border-b">
+      <header className="flex justify-between p-3 border-b w-full">
         <NavLink to="/" className="flex items-center gap-1 text-primary ms-5">
           <svg
             xmlns="http://www.w3.org/2000/svg"

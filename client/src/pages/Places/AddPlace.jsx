@@ -181,6 +181,7 @@ export default function AddPlace() {
               <h3 className="mt-2 mb-1 ms-2">Maximum number of guests</h3>
               <input
                 type="number"
+                min={1}
                 placeholder="02"
                 value={maxGuests}
                 onChange={(ev) => {
@@ -193,6 +194,7 @@ export default function AddPlace() {
               <h3 className="mt-2 mb-1 ms-2">Price per Night</h3>
               <input
                 type="number"
+                min={100}
                 placeholder="1000"
                 value={price}
                 onChange={(ev) => {

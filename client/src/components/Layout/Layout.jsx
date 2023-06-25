@@ -3,7 +3,7 @@ import Header from "../Header/Header";
 
 export default function Layout(props) {
   return (
-    <div className="min-h-screen">
+    <div className="flex flex-col w-full">
       <Header />
       <Outlet />
     </div>
