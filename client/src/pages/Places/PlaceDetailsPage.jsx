@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import BookingWidget from "./BookingWidget";
+import PlaceImg from "../../components/ImageComponent/PlaceImg";
 
 export default function PlaceDetailsPage() {
   const { id } = useParams();
@@ -47,6 +48,7 @@ export default function PlaceDetailsPage() {
               Close
             </button>
           </div>
+
           {placeDetails?.photos?.length > 0 &&
             placeDetails.photos.map((photo) => (
               <div>
@@ -90,62 +92,39 @@ export default function PlaceDetailsPage() {
       <div className="relative">
         <div className="grid gap-2 grid-cols-2 rounded-3xl overflow-hidden">
           <div>
-            {placeDetails?.photos && (
-              <div className="">
-                <img
-                  onClick={() => setShowAllPhotos(true)}
-                  className="aspect-square cursor-pointer object-cover max-h-min"
-                  src={
-                    "http://localhost:4000/uploads/" + placeDetails?.photos[0]
-                  }
-                />
-              </div>
-            )}
+            <PlaceImg
+              place={placeDetails}
+              classname="aspect-square cursor-pointer object-cover max-h-min"
+              index={0}
+            />
           </div>
           <div className="grid grid-cols-2 gap-2">
             <div className="grid">
-              {placeDetails?.photos && (
-                <img
-                  onClick={() => setShowAllPhotos(true)}
-                  className="aspect-square cursor-pointer object-cover"
-                  src={
-                    "http://localhost:4000/uploads/" + placeDetails?.photos[1]
-                  }
+              <PlaceImg
+                place={placeDetails}
+                classname="aspect-square cursor-pointer object-cover"
+                index={1}
+              />
+
+              <div className="overflow-hidden">
+                <PlaceImg
+                  place={placeDetails}
+                  classname="aspect-square cursor-pointer object-cover relative top-2"
+                  index={1}
                 />
-              )}
-              {placeDetails?.photos && (
-                <div className="overflow-hidden">
-                  <img
-                    onClick={() => setShowAllPhotos(true)}
-                    className="aspect-square cursor-pointer object-cover relative top-2"
-                    src={
-                      "http://localhost:4000/uploads/" + placeDetails?.photos[2]
-                    }
-                  />
-                </div>
-              )}
+              </div>
             </div>
             <div className="grid">
-              {placeDetails?.photos && (
-                <img
-                  onClick={() => setShowAllPhotos(true)}
-                  className="aspect-square cursor-pointer object-cover"
-                  src={
-                    "http://localhost:4000/uploads/" + placeDetails?.photos[3]
-                  }
-                />
-              )}
-              {placeDetails?.photos && (
-                <div className="overflow-hidden">
-                  <img
-                    onClick={() => setShowAllPhotos(true)}
-                    className="aspect-square cursor-pointer object-cover relative top-2"
-                    src={
-                      "http://localhost:4000/uploads/" + placeDetails?.photos[4]
-                    }
-                  />
-                </div>
-              )}
+              <PlaceImg
+                place={placeDetails}
+                classname="aspect-square cursor-pointer object-cover"
+                index={3}
+              />
+              <PlaceImg
+                place={placeDetails}
+                classname="aspect-square cursor-pointer object-cover relative top-2"
+                index={4}
+              />
             </div>
           </div>
         </div>

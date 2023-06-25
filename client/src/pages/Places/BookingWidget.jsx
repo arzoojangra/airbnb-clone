@@ -16,9 +16,9 @@ export default function BookingWidget({ place }) {
 
   useEffect(() => {
     if (user) {
-      setName(user.name);
+      setName(user.fName + " " + user.lName);
     }
-  }, []);
+  }, [user]);
 
   let numberOfNights = 0;
   if (checkIn && checkOut) {
@@ -38,7 +38,9 @@ export default function BookingWidget({ place }) {
       phone: mobile,
       price: numberOfNights * place.price,
     });
-    setRedirect(`/account/bookings/${booking._id}`);
+
+    // console.log(booking);
+    setRedirect(`/account/bookings/${booking.data._id}`);
   }
 
   if (redirect) {

@@ -6,7 +6,7 @@ export default function PlaceImg({ place, index = 0, classname }) {
   return (
     <img
       className={classname}
-      src={"http://localhost:4000/uploads/" + place.photo[index]}
+      src={"http://localhost:4000/uploads/" + place.photos[index]}
       alt=""
     />
   );

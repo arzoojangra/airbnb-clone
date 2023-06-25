@@ -260,6 +260,8 @@ app.get("/fetchPlaces", async (req, res) => {
 // book a place
 
 app.post("/booking", async (req, res) => {
+  const { token } = req.cookies;
+
   const { place, checkIn, checkOut, numberOfGuests, name, phone, price } =
     req.body;
 
@@ -291,7 +293,7 @@ app.get("/bookings", async (req, res) => {
 
     const { id } = userData;
 
-    res.json(await Booking.find({ person: id }));
+    res.json(await Booking.find({ person: id }).populate("place"));
   });
 });
 

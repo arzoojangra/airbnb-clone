@@ -1,15 +1,14 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import PlaceImg from "../../components/Images/PlaceImg";
+import PlaceImg from "../../components/ImageComponent/PlaceImg";
 
 export default function Index(props) {
   const [places, setPlaces] = useState([]);
 
   useEffect(() => {
     axios.get("/fetchPlaces").then((response) => {
-      setPlaces([...response.data, ...response.data, ...response.data]);
-      console.log(response.data);
+      setPlaces(response.data);
     });
   }, []);
 
@@ -23,16 +22,11 @@ export default function Index(props) {
             className="rounded-xl"
           >
             <div className="rounded flex">
-              {/* <PlaceImg place = {place} classname="rounded-2xl object-cover aspect-square" index = {0}/> */}
-              {place.photos ? (
-                <img
-                  className="rounded-2xl object-cover aspect-square"
-                  src={"http://localhost:4000/uploads/" + place.photos?.[0]}
-                  alt=""
-                />
-              ) : (
-                ""
-              )}
+              <PlaceImg
+                place={place}
+                classname="rounded-2xl object-cover aspect-square"
+                index={0}
+              />
             </div>
 
             <div className="ms-1">

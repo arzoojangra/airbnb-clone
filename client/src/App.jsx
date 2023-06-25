@@ -27,7 +27,7 @@ export default function App() {
           <Route path="/account" element={<Account />} />
           <Route path="/account/places" element={<PlacesPage />} />
           <Route path="/account/bookings" element={<Bookings />} />
-          <Route path="/account/booking/:id" element={<BookingDetails />} />
+          <Route path="/account/bookings/:id" element={<BookingDetails />} />
           <Route path="/account/places/new" element={<AddPlace />} />
           <Route path="/account/places/:id" element={<AddPlace />} />
           <Route path="/place/:id" element={<PlaceDetailsPage />} />
