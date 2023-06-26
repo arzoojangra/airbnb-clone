@@ -297,6 +297,14 @@ app.get("/bookings", async (req, res) => {
   });
 });
 
+// get booking details
+
+app.get("/fetchBooking/:id", async (req, res) => {
+  const { id } = req.params;
+
+  res.json(await Booking.findById(id).populate("place"));
+});
+
 app.listen(4000);
 
 // CziC5RjV7HPqLo3Y
