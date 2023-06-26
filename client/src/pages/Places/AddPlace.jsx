@@ -82,9 +82,7 @@ export default function AddPlace() {
       setRedirect(true);
     } else {
       // add new place
-      await axios.post("/addPlace", {
-        placeData,
-      });
+      await axios.post("/addPlace", placeData);
 
       setRedirect(true);
     }
