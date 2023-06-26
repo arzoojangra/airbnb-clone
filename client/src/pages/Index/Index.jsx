@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import PlaceImg from "../../components/OtherComponents/PlaceImg";
+import PlaceImg from "../../components/ImageComponent/PlaceImg";
 
 export default function Index(props) {
   const [places, setPlaces] = useState([]);
@@ -13,7 +13,7 @@ export default function Index(props) {
   }, []);
 
   return (
-    <div className="grid gap-6 gap-y-8 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 px-20 py-14">
+    <div className="grid gap-6 gap-y-8 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-10">
       {places.length > 0 &&
         places.map((place) => (
           <Link

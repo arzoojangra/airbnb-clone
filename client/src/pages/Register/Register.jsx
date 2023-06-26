@@ -1,13 +1,12 @@
 import axios from "axios";
 import { useState } from "react";
-import { NavLink, Navigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 export default function Register() {
   const [fName, setfName] = useState("");
   const [lName, setlName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [redirect, setRedirect] = useState(false);
 
   const RegisterUser = async (e) => {
     e.preventDefault();
@@ -23,15 +22,10 @@ export default function Register() {
         password,
       });
       alert("Registration successful! You can now login!");
-      setRedirect(true);
     } catch (error) {
       alert("Something went wrong!");
     }
   };
-
-  if (redirect) {
-    return <Navigate to="/login" />;
-  }
 
   return (
     <div className="mt-20 grow flex items-center justify-around">

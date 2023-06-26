@@ -3,7 +3,7 @@ import axios from "axios";
 
 import AccountNavBar from "../Account/AccountNavBar";
 import { useEffect, useState } from "react";
-import PlaceImg from "../../components/OtherComponents/PlaceImg";
+import PlaceImg from "../../components/ImageComponent/PlaceImg";
 
 export default function PlacesPage() {
   const [places, setPlaces] = useState([]);
@@ -45,7 +45,7 @@ export default function PlacesPage() {
         </div>
       )}
 
-      <div className="px-20">
+      <div className="px-10">
         {places.length > 0 &&
           places.map((place) => (
             <Link
