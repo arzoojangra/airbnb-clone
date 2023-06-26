@@ -306,6 +306,3 @@ app.get("/fetchBooking/:id", async (req, res) => {
 });
 
 app.listen(4000);
-
-// CziC5RjV7HPqLo3Y
-// mongodb+srv://arzoojangra:CziC5RjV7HPqLo3Y@airbnb-clone.ecpyttj.mongodb.net/
