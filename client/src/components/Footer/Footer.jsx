@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <div className="px-10 py-10 bg-gray-200 justify-between gap-8 text-center">
+    <div className="px-10 py-10 bg-gray-200 justify-between gap-8 text-center mt-20">
       <div className="border-b border-gray-500 grid grid-cols-3 pb-6">
         <div className="gap-2 px-5">
           <b className="text-2xl my-2">Support</b>
