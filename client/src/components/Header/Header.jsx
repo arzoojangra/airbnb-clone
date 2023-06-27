@@ -61,7 +61,7 @@ export default function Header() {
 
         <div className="flex items-center gap-1">
           <NavLink
-            to={user ? "/account/places/new" : "/login"}
+            to="/account/places/new"
             className="hover:bg-gray-100 rounded-full px-3 py-2"
           >
             Airbnb your home
@@ -139,27 +139,23 @@ export default function Header() {
                     </NavLink>
                   )}
                 </Menu.Item>
-                {!user ? (
-                  <Menu.Item>
-                    {({ active }) => (
-                      <NavLink
-                        to="/login"
-                        className={classNames(
-                          active ? "bg-gray-100" : "",
-                          "block px-4 py-2 text-sm text-gray-700 border-b my-1"
-                        )}
-                      >
-                        Login
-                      </NavLink>
-                    )}
-                  </Menu.Item>
-                ) : (
-                  ""
-                )}
                 <Menu.Item>
                   {({ active }) => (
                     <NavLink
-                      to={user ? "/account/places/new" : "/login"}
+                      to={user ? "/" : "/login"}
+                      className={classNames(
+                        active ? "bg-gray-100" : "",
+                        "block px-4 py-2 text-sm text-gray-700 border-b my-1"
+                      )}
+                    >
+                      {user ? "Logout" : "Login"}
+                    </NavLink>
+                  )}
+                </Menu.Item>
+                <Menu.Item>
+                  {({ active }) => (
+                    <NavLink
+                      to="/account/places/new"
                       className={classNames(
                         active ? "bg-gray-100" : "",
                         "block px-4 py-2 text-sm text-gray-700 my-1"
