@@ -1,75 +1,135 @@
 import axios from "axios";
-import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Navigate, NavLink } from "react-router-dom";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 export default function Register() {
-  const [fName, setfName] = useState("");
-  const [lName, setlName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const initialValues = { fname: "", lname: "", email: "", password: "" };
+  const validationSchema = Yup.object({
+    fname: Yup.string().min(2).max(80).required("First Name can not be empty!"),
+    lname: Yup.string()
+      .min(2, "last name can't less than 2 characters!")
+      .max(80),
+    email: Yup.string()
+      .email("Please enter a valid email address!")
+      .required("E-mail can not be empty!"),
+    password: Yup.string()
+      .min(5, "Password must be at least 5 characters!")
+      .max(15, "Password cannot be greater than 15 characters!")
+      .required("Please enter the password!"),
+  });
 
-  const RegisterUser = async (e) => {
-    e.preventDefault();
+  const [message, setMessage] = useState("");
+  const [success, setSuccess] = useState(false);
+  const [seconds, setSeconds] = useState(-1);
+  const [statusCode, setStatusCode] = useState(0);
 
-    // console.log("email: ", email);
-    // console.log("password: ", password);
+  useEffect(() => {
+    setTimeout(() => {
+      if (seconds > 0) {
+        setSeconds(seconds - 1);
+        // console.log(seconds);
+      }
+    }, 1000);
+  }, [seconds]);
 
-    try {
-      await axios.post("/register", {
-        fName,
-        lName,
-        email,
-        password,
-      });
-      alert("Registration successful! You can now login!");
-    } catch (error) {
-      alert("Something went wrong!");
-    }
-  };
+  const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
+    useFormik({
+      initialValues,
+      validationSchema,
+      onSubmit: async (values) => {
+        try {
+          var registration = await axios.post("/register", {
+            data: values,
+          });
+          if (!registration.data.success) {
+            setMessage(registration.data.message);
+            setStatusCode(registration.status);
+            setSuccess(false);
+          }else {
+            setMessage("Registration successful! You can now login!");
+            setSuccess(true);
+            setSeconds(5);
+          }
+        } catch (error) {
+          alert("Something went wrong!");
+        }
+      },
+    });
 
+  if (!seconds) {
+    return <Navigate to={"/login"} />;
+  }
+  if (success && message.length) {
+    return (
+      <>
+        <h1 className=" mt-20 text-2xl text-center mb-4">{message}</h1>
+        <div className="text-center py-2 text-gray-500">
+          You will be redirected to login page in {seconds} seconds...
+        </div>
+      </>
+    );
+  }
   return (
     <div className="mt-20 grow flex items-center justify-around">
       <div className="mb-60">
         <h1 className="text-4xl text-center mb-4">Register</h1>
 
-        <form
-          className="max-w-md mx-auto"
-          onSubmit={(e) => {
-            RegisterUser(e);
-          }}
-        >
+        <form className="max-w-md mx-auto" onSubmit={handleSubmit} noValidate>
           <input
             type="text"
+            id="fname"
+            name="fname"
             placeholder="First Name Here"
-            value={fName}
-            onChange={(e) => {
-              setfName(e.target.value);
-            }}
+            value={values.fname}
+            onChange={handleChange}
+            onBlur={handleBlur}
           />
+          {errors.fname && touched.fname ? (
+            <p className="text-primary py-1 px-3">{errors.fname}</p>
+          ) : null}
           <input
             type="text"
+            id="lname"
+            name="lname"
             placeholder="Last Name Here"
-            value={lName}
-            onChange={(e) => {
-              setlName(e.target.value);
-            }}
+            value={values.lname}
+            onChange={handleChange}
+            onBlur={handleBlur}
           />
+          {errors.lname && touched.lname ? (
+            <p className="text-primary py-1 px-3">{errors.lname}</p>
+          ) : null}
           <input
             type="email"
+            id="email"
+            name="email"
             placeholder="your@email.com"
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
+            value={values.email}
+            onChange={handleChange}
+            onBlur={handleBlur}
           />
+          {errors.email && touched.email ? (
+            <p className="text-primary py-1 px-3">{errors.email}</p>
+          ) : null}
+          {!success && statusCode == 203 ? (
+            <div className="text-primary py-1 px-3">{message}</div>
+          ) : (
+            <></>
+          )}
           <input
             type="password"
+            id="password"
+            name="password"
             placeholder="password"
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
+            value={values.password}
+            onChange={handleChange}
+            onBlur={handleBlur}
           />
+          {errors.password && touched.password ? (
+            <p className="text-primary py-1 px-3">{errors.password}</p>
+          ) : null}
           <button type="submit" className="primary">
             Register
           </button>
@@ -80,6 +140,9 @@ export default function Register() {
             </NavLink>
           </div>
         </form>
+        <div>
+          {(!success && statusCode != 200 && statusCode != 203) ? <div className="text-primary py-1 px-3">{message}</div> : <></> }
+        </div>
       </div>
     </div>
   );

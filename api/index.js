@@ -9,6 +9,8 @@ const imageDownloader = require("image-downloader");
 const multer = require("multer");
 const fs = require("fs");
 
+const Responses = require("./response")
+
 const User = require("./models/User");
 const Place = require("./models/Place");
 const Booking = require("./models/Booking");
@@ -38,19 +40,31 @@ app.get("/test", (req, res) => {
 // Register API
 
 app.post("/register", async (req, res) => {
-  const { fName, lName, email, password } = req.body;
+  const { fname, lname, email, password } = req.body.data;
 
   try {
-    const userData = await User.create({
-      fName,
-      lName,
+    const existingUser = await User.findOne({
       email,
-      password: bcrypt.hashSync(password, bcryptSalt),
     });
 
-    res.json(userData);
+    if(existingUser){
+      Responses.returnResponse(res, 203, "This email already exists! Try using another email or login to continue.", false);
+    }else{
+      const userData = await User.create({
+        fname,
+        lname, 
+        email,
+        password: bcrypt.hashSync(password, bcryptSalt),
+      });
+      if(!userData._id){
+        Responses.returnResponse(res, 201, "Unable to create user!", false);
+      }
+      else Responses.returnResponse(res, 200, "User created successfully!", true, userData);
+    }
+    
   } catch (error) {
-    res.status(422).json(error);
+    console.log(error);
+    Responses.returnResponse(res, 201, "Something went wrong! Please try again later.", false);
   }
 });
 
@@ -118,12 +132,16 @@ app.post("/upload-by-link", async (req, res) => {
   const { link } = req.body;
   const newName = "photo" + Date.now() + ".jpg";
 
-  await imageDownloader.image({
-    url: link,
-    dest: __dirname + "/uploads/" + newName,
-  });
-
-  res.json(newName);
+  try {
+    await imageDownloader.image({
+      url: link,
+      dest: __dirname + "/uploads/" + newName,
+    });
+  
+    res.json(newName);
+  } catch (error) {
+    res.json("Invalid link!");
+  }
 });
 
 // Upload image
@@ -305,4 +323,6 @@ app.get("/fetchBooking/:id", async (req, res) => {
   res.json(await Booking.findById(id).populate("place"));
 });
 
-app.listen(4000);
+app.listen(4000, () => {
+  console.log('App started');
+});
