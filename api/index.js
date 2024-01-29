@@ -48,12 +48,7 @@ app.post("/register", async (req, res) => {
     });
 
     if (existingUser) {
-      Responses.returnResponse(
-        res,
-        203,
-        "This email already exists! Try using another email or login to continue.",
-        false
-      );
+      Responses.returnResponse(res,203,"This email already exists! Try using another email or login to continue.",false);
     } else {
       const userData = await User.create({
         fname,
@@ -64,22 +59,11 @@ app.post("/register", async (req, res) => {
       if (!userData._id) {
         Responses.returnResponse(res, 201, "Unable to create user!", false);
       } else
-        Responses.returnResponse(
-          res,
-          200,
-          "User created successfully!",
-          true,
-          userData
-        );
+        Responses.returnResponse(res,200,"User created successfully!",true,userData);
     }
   } catch (error) {
     console.log(error);
-    Responses.returnResponse(
-      res,
-      201,
-      "Something went wrong! Please try again later.",
-      false
-    );
+    Responses.returnResponse(res,201,"Something went wrong! Please try again later.",false);
   }
 });
 
@@ -103,21 +87,10 @@ app.post("/login", async (req, res) => {
           {},
           (err, token) => {
             if (err) {
-              Responses.returnResponse(
-                res,
-                201,
-                "Something went wrong! Please try again later.",
-                false
-              );
+              Responses.returnResponse(res,201,"Something went wrong! Please try again later.",false);
             }
             res.cookie("token", token);
-            Responses.returnResponse(
-              res,
-              200,
-              "Login successful!",
-              true,
-              userData
-            );
+            Responses.returnResponse(res,200,"Login successful!",true,userData);
           }
         );
       } else {
@@ -125,12 +98,7 @@ app.post("/login", async (req, res) => {
       }
     } else Responses.returnResponse(res, 201, "User not found!", false);
   } catch (error) {
-    Responses.returnResponse(
-      res,
-      201,
-      "Something went wrong! Please try again later.",
-      false
-    );
+    Responses.returnResponse(res,201,"Something went wrong! Please try again later.",false);
   }
 });
 
@@ -316,20 +284,28 @@ app.post("/booking", async (req, res) => {
     req.body;
 
   jwt.verify(token, jwtKey, {}, async (err, userData) => {
-    if (err) throw err;
+    if (err) Responses.returnResponse(res,201,"Something went wrong! Please try again later.",false);
 
     const { id } = userData;
-    const bookingInfo = await Booking.create({
-      place,
-      person: id,
-      checkIn,
-      checkOut,
-      numberOfGuests,
-      name,
-      phone,
-      price,
-    });
-    res.json(bookingInfo);
+    try {
+      const bookingInfo = await Booking.create({
+        place,
+        person: id,
+        checkIn,
+        checkOut,
+        numberOfGuests,
+        name,
+        phone,
+        price,
+      });
+      if(bookingInfo._id){
+        Responses.returnResponse(res,200,"Booking successful!",true,bookingInfo);
+      }else{
+        Responses.returnResponse(res,201,"Booking can not be done!",false);
+      }
+    } catch (error) {
+      Responses.returnResponse(res,201,"Something went wrong! Please try again later.",false);
+    }
   });
 });
 

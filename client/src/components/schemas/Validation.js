@@ -54,3 +54,20 @@ export const AccomodationsValidationSchema = Yup.object({
   maxGuests: Yup.number().required("Please add the max number of guests!"),
   price: Yup.number().required("Price can not be empty!"),
 });
+
+// Book place validations
+export const BookingInitialValues = {
+  checkIn: "",
+  checkOut: "",
+  numberOfGuests: "",
+  name: "",
+  phone: "",
+};
+
+export const BookingValidationSchema = Yup.object({
+  checkIn: Yup.date().required("Check in date can not be empty!"),
+  checkOut: Yup.date().required("Check out date can not be empty!"),
+  numberOfGuests: Yup.number().required("Please add the max number of guests!"),
+  name: Yup.string().required("please add you name!"),
+  phone: Yup.string().required("Mobile can not be empty!"),
+});

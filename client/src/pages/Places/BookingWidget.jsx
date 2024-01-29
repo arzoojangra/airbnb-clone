@@ -3,44 +3,49 @@ import { differenceInCalendarDays } from "date-fns";
 import axios from "axios";
 import { UserContext } from "../../Context/UserContext";
 import { Navigate } from "react-router-dom";
+import {
+  BookingInitialValues,
+  BookingValidationSchema,
+} from "../../components/schemas/Validation";
+import { useFormik } from "formik";
 
 export default function BookingWidget({ place }) {
-  const [checkIn, setCheckIn] = useState("");
-  const [checkOut, setCheckOut] = useState("");
-  const [numberOfGuests, setNumberOfGuests] = useState(1);
-  const [name, setName] = useState("");
-  const [mobile, setMobile] = useState("");
+  const initialValues = BookingInitialValues;
+  const validationSchema = BookingValidationSchema;
+
+  const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
+    useFormik({
+      initialValues,
+      validationSchema,
+      onSubmit: async (values) => {
+        values.place = place._id;
+        values.price = numberOfNights * place.price;
+        const booking = await axios.post("/booking", values);
+        if(booking.data.success){
+          setRedirect(`/account/bookings/${booking.data.result._id}`);
+        }
+        else{
+          alert("Something went wrong please try again later!");
+        }
+      },
+    });
+
   const [redirect, setRedirect] = useState("");
 
   const { user } = useContext(UserContext);
 
   useEffect(() => {
     if (user) {
-      setName(user.fName + " " + user.lName);
+      values.name = user.fName + " " + user.lName;
     }
   }, [user]);
 
   let numberOfNights = 0;
-  if (checkIn && checkOut) {
+  if (values.checkIn && values.checkOut) {
     numberOfNights = differenceInCalendarDays(
-      new Date(checkOut),
-      new Date(checkIn)
+      new Date(values.checkOut),
+      new Date(values.checkIn)
     );
-  }
-
-  async function BookThisPlace() {
-    const booking = await axios.post("/booking", {
-      place: place._id,
-      checkIn,
-      checkOut,
-      numberOfGuests,
-      name,
-      phone: mobile,
-      price: numberOfNights * place.price,
-    });
-
-    // console.log(booking);
-    setRedirect(`/account/bookings/${booking.data._id}`);
   }
 
   if (redirect) {
@@ -59,46 +64,80 @@ export default function BookingWidget({ place }) {
             <label>Check in:</label>
             <input
               type="date"
-              value={checkIn}
-              onChange={(ev) => setCheckIn(ev.target.value)}
+              value={values.checkIn}
+              id="checkIn"
+              name="checkIn"
+              onChange={handleChange}
+              onBlur={handleBlur}
             />
+            {errors.checkIn && touched.checkIn ? (
+              <p className="text-primary py-1">{errors.checkIn}</p>
+            ) : null}
           </div>
+
           <div className="py-3 px-4 border-l">
             <label>Check out:</label>
             <input
               type="date"
-              value={checkOut}
-              onChange={(ev) => setCheckOut(ev.target.value)}
+              value={values.checkOut}
+              id="checkOut"
+              name="checkOut"
+              onChange={handleChange}
+              onBlur={handleBlur}
             />
+            {errors.checkOut && touched.checkOut ? (
+              <p className="text-primary py-1">{errors.checkOut}</p>
+            ) : null}
           </div>
         </div>
+
         <div className="py-3 px-4 border-t">
           <label>Number of guests:</label>
           <input
             type="number"
-            value={numberOfGuests}
+            value={values.numberOfGuests}
+            id="numberOfGuests"
+            name="numberOfGuests"
             min={1}
-            onChange={(ev) => setNumberOfGuests(ev.target.value)}
+            onChange={handleChange}
+            onBlur={handleBlur}
           />
+          {errors.numberOfGuests && touched.numberOfGuests ? (
+            <p className="text-primary py-1 px-3">{errors.numberOfGuests}</p>
+          ) : null}
         </div>
+
         {numberOfNights > 0 && (
           <div className="py-3 px-4 border-t">
             <label>Your full name:</label>
             <input
               type="text"
-              value={name}
-              onChange={(ev) => setName(ev.target.value)}
+              value={values.name}
+              id="name"
+              name="name"
+              onChange={handleChange}
+              onBlur={handleBlur}
             />
+            {errors.name && touched.name ? (
+              <p className="text-primary py-1 px-3">{errors.name}</p>
+            ) : null}
+
             <label>Phone number:</label>
             <input
               type="tel"
-              value={mobile}
-              onChange={(ev) => setMobile(ev.target.value)}
+              value={values.phone}
+              id="phone"
+              name="phone"
+              onChange={handleChange}
+              onBlur={handleBlur}
             />
+            {errors.phone && touched.phone ? (
+              <p className="text-primary py-1 px-3">{errors.phone}</p>
+            ) : null}
           </div>
         )}
       </div>
-      <button onClick={BookThisPlace} className="primary mt-4">
+      <button onClick={handleSubmit} className="primary mt-4" type="submit">
         Book this place
         {numberOfNights > 0 && (
           <span className="text-base mx-1">
