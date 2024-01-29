@@ -2,34 +2,40 @@ import { useContext, useState } from "react";
 import { NavLink, Navigate } from "react-router-dom";
 import axios from "axios";
 import { UserContext } from "../../Context/UserContext";
+import {
+  LoginInitialValues,
+  LoginValidationSchema,
+} from "../../components/schemas/Validation";
+import { useFormik } from "formik";
 
-export default function Login(props) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+export default function Login() {
+  const initialValues = LoginInitialValues;
+  const validationSchema = LoginValidationSchema;
   const [redirect, setRedirect] = useState(false);
   const { setUser } = useContext(UserContext);
 
-  const LoginUser = async (e) => {
-    e.preventDefault();
+  const [message, setMessage] = useState("");
+  const [success, setSuccess] = useState(false);
 
-    // console.log("email: ", email);
-    // console.log("password: ", password);
-
-    try {
-      const { data } = await axios.post("/login", {
-        email,
-        password,
-      });
-
-      setUser(data);
-      console.log(data);
-
-      alert("Login successfull!");
-      setRedirect(true);
-    } catch (error) {
-      alert("Something went wrong!");
-    }
-  };
+  const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
+    useFormik({
+      initialValues,
+      validationSchema,
+      onSubmit: async (values) => {
+        try {
+          const response = await axios.post("/login", values);
+          if (response.data.success) {
+            setUser(response.data);
+            setRedirect(true);
+            setSuccess(true);
+          } else {
+            setMessage(response.data.message);
+          }
+        } catch (error) {
+          alert("Something went wrong!");
+        }
+      },
+    });
 
   if (redirect) {
     return <Navigate to={"/"} />;
@@ -40,28 +46,36 @@ export default function Login(props) {
       <div className="mb-60">
         <h1 className="text-4xl text-center mb-4">Login</h1>
 
-        <form
-          className="max-w-md mx-auto"
-          onSubmit={(e) => {
-            LoginUser(e);
-          }}
-        >
+        <form className="max-w-md mx-auto" onSubmit={handleSubmit}>
           <input
             type="email"
+            id="email"
+            name="email"
             placeholder="your@email.com"
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
+            value={values.email}
+            onChange={handleChange}
+            onBlur={handleBlur}
           />
+          {errors.email && touched.email ? (
+            <p className="text-primary py-1 px-3">{errors.email}</p>
+          ) : null}
           <input
             type="password"
+            id="password"
+            name="password"
             placeholder="password"
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
+            value={values.password}
+            onChange={handleChange}
+            onBlur={handleBlur}
           />
+          {errors.password && touched.password ? (
+            <p className="text-primary py-1 px-3">{errors.password}</p>
+          ) : null}
+          {!success ? (
+            <div className="text-primary py-1 px-3">{message}</div>
+          ) : (
+            <></>
+          )}
           <button type="submit" className="primary">
             Login
           </button>

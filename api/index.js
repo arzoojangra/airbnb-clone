@@ -9,7 +9,7 @@ const imageDownloader = require("image-downloader");
 const multer = require("multer");
 const fs = require("fs");
 
-const Responses = require("./response")
+const Responses = require("./response");
 
 const User = require("./models/User");
 const Place = require("./models/Place");
@@ -40,31 +40,46 @@ app.get("/test", (req, res) => {
 // Register API
 
 app.post("/register", async (req, res) => {
-  const { fname, lname, email, password } = req.body.data;
+  const { fname, lname, email, password } = req.body;
 
   try {
     const existingUser = await User.findOne({
       email,
     });
 
-    if(existingUser){
-      Responses.returnResponse(res, 203, "This email already exists! Try using another email or login to continue.", false);
-    }else{
+    if (existingUser) {
+      Responses.returnResponse(
+        res,
+        203,
+        "This email already exists! Try using another email or login to continue.",
+        false
+      );
+    } else {
       const userData = await User.create({
         fname,
-        lname, 
+        lname,
         email,
         password: bcrypt.hashSync(password, bcryptSalt),
       });
-      if(!userData._id){
+      if (!userData._id) {
         Responses.returnResponse(res, 201, "Unable to create user!", false);
-      }
-      else Responses.returnResponse(res, 200, "User created successfully!", true, userData);
+      } else
+        Responses.returnResponse(
+          res,
+          200,
+          "User created successfully!",
+          true,
+          userData
+        );
     }
-    
   } catch (error) {
     console.log(error);
-    Responses.returnResponse(res, 201, "Something went wrong! Please try again later.", false);
+    Responses.returnResponse(
+      res,
+      201,
+      "Something went wrong! Please try again later.",
+      false
+    );
   }
 });
 
@@ -88,17 +103,34 @@ app.post("/login", async (req, res) => {
           {},
           (err, token) => {
             if (err) {
-              throw err;
+              Responses.returnResponse(
+                res,
+                201,
+                "Something went wrong! Please try again later.",
+                false
+              );
             }
-            res.cookie("token", token).json(userData);
+            res.cookie("token", token);
+            Responses.returnResponse(
+              res,
+              200,
+              "Login successful!",
+              true,
+              userData
+            );
           }
         );
       } else {
-        res.status(422).json("pass not ok");
+        Responses.returnResponse(res, 203, "Invalid password!", false);
       }
-    } else res.json("no user found");
+    } else Responses.returnResponse(res, 201, "User not found!", false);
   } catch (error) {
-    res.status(422).json(error);
+    Responses.returnResponse(
+      res,
+      201,
+      "Something went wrong! Please try again later.",
+      false
+    );
   }
 });
 
@@ -137,7 +169,7 @@ app.post("/upload-by-link", async (req, res) => {
       url: link,
       dest: __dirname + "/uploads/" + newName,
     });
-  
+
     res.json(newName);
   } catch (error) {
     res.json("Invalid link!");
@@ -324,5 +356,5 @@ app.get("/fetchBooking/:id", async (req, res) => {
 });
 
 app.listen(4000, () => {
-  console.log('App started');
+  console.log("App started");
 });

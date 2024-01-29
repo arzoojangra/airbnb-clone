@@ -2,23 +2,14 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Navigate, NavLink } from "react-router-dom";
 import { useFormik } from "formik";
-import * as Yup from "yup";
+import {
+  RegistrationInitialValues,
+  RegistrationValidationSchema,
+} from "../../components/schemas/Validation";
 
 export default function Register() {
-  const initialValues = { fname: "", lname: "", email: "", password: "" };
-  const validationSchema = Yup.object({
-    fname: Yup.string().min(2).max(80).required("First Name can not be empty!"),
-    lname: Yup.string()
-      .min(2, "last name can't less than 2 characters!")
-      .max(80),
-    email: Yup.string()
-      .email("Please enter a valid email address!")
-      .required("E-mail can not be empty!"),
-    password: Yup.string()
-      .min(5, "Password must be at least 5 characters!")
-      .max(15, "Password cannot be greater than 15 characters!")
-      .required("Please enter the password!"),
-  });
+  const initialValues = RegistrationInitialValues;
+  const validationSchema = RegistrationValidationSchema;
 
   const [message, setMessage] = useState("");
   const [success, setSuccess] = useState(false);
@@ -40,14 +31,11 @@ export default function Register() {
       validationSchema,
       onSubmit: async (values) => {
         try {
-          var registration = await axios.post("/register", {
-            data: values,
-          });
+          var registration = await axios.post("/register", values);
           if (!registration.data.success) {
             setMessage(registration.data.message);
             setStatusCode(registration.status);
-            setSuccess(false);
-          }else {
+          } else {
             setMessage("Registration successful! You can now login!");
             setSuccess(true);
             setSeconds(5);
@@ -141,7 +129,11 @@ export default function Register() {
           </div>
         </form>
         <div>
-          {(!success && statusCode != 200 && statusCode != 203) ? <div className="text-primary py-1 px-3">{message}</div> : <></> }
+          {!success && statusCode != 200 && statusCode != 203 ? (
+            <div className="text-primary py-1 px-3">{message}</div>
+          ) : (
+            <></>
+          )}
         </div>
       </div>
     </div>
