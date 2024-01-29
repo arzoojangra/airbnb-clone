@@ -31,7 +31,7 @@ export default function PlaceDetailsPage() {
         <div className="mx-2 my-8 grid gap-8 grid-cols-1 md:grid-cols-[2fr_1fr]">
           <div className="border border-gray-400 py-2 px-4 rounded-2xl">
             <div className="my-4">
-              <h2 className="font-semibold text-3xl mb-2">Description</h2>
+              <h2 className="font-semibold text-xl md:text-3xl mb-2">Description</h2>
               {placeDetails.description}
             </div>
             <b> Check-in Time: </b> {placeDetails.checkIn}:00
