@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { Menu, Transition } from "@headlessui/react";
-import { Fragment, useContext } from "react";
+import { Fragment, useContext, useState } from "react";
 import { UserContext } from "../../Context/UserContext";
 
 function classNames(...classes) {
@@ -12,8 +12,9 @@ export default function Header() {
 
   return (
     <>
-      <header className="flex justify-between p-3 border-b w-full">
-        <NavLink to="/" className="flex items-center gap-1 text-primary ms-5">
+      <header className="border-b p-4 w-full">
+        <div className="flex items-center justify-between">
+        <NavLink to="/" className="flex items-center gap-1 text-primary">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -36,6 +37,7 @@ export default function Header() {
 
         <div />
 
+        <div className="hidden md:block">
         <div className="flex gap-2 border border-gray-300 rounded-full py-3 px-4 shadow-md shadow-gray-300">
           <div className="mx-3">Anywhere</div>
           <div className="border-l border-gray-300" />
@@ -58,8 +60,11 @@ export default function Header() {
             </svg>
           </button>
         </div>
+        </div>
 
         <div className="flex items-center gap-1">
+        <div className="hidden lg:block">
+          <div className="flex items-center gap-1">
           <NavLink
             to={user ? "/account/places/new" : "/login"}
             className="hover:bg-gray-100 rounded-full px-3 py-2"
@@ -83,6 +88,8 @@ export default function Header() {
               />
             </svg>
           </button>
+          </div>
+          </div>
 
           <Menu as="div" className="relative ml-3 me-3">
             <div>
@@ -184,6 +191,7 @@ export default function Header() {
               </Menu.Items>
             </Transition>
           </Menu>
+        </div>
         </div>
       </header>
     </>

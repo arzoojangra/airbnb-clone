@@ -1,7 +1,7 @@
 export default function AddressLink({ children }) {
   return (
     <a
-      className="block my-2 font-semibold underline flex gap-1 items-center"
+      className="block my-2 font-semibold underline flex gap-1 items-center md:text-xl"
       target="_blank"
       href={"https://maps.google.com/?q=" + children}
     >

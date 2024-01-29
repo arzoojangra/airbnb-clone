@@ -13,7 +13,7 @@ export default function Index(props) {
   }, []);
 
   return (
-    <div className="grid gap-6 gap-y-8 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 px-20 py-14">
+    <div className="grid gap-6 gap-y-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 px-20 py-14">
       {places.length > 0 &&
         places.map((place) => (
           <Link

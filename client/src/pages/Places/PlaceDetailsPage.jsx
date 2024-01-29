@@ -22,7 +22,7 @@ export default function PlaceDetailsPage() {
   return (
     <div className="px-10 bg-gray-100">
       <div className="px-10 py-10">
-        <h1 className="font-bold text-3xl">{placeDetails?.title}</h1>
+        <h1 className="font-bold text-xl md:text-3xl">{placeDetails?.title}</h1>
 
         <AddressLink>{placeDetails.address} </AddressLink>
 
