@@ -25,7 +25,10 @@ export default function BookingWidget({ place }) {
           setRedirect(`/account/bookings/${booking.data.result._id}`);
         }
         else{
-          alert("Something went wrong please try again later!");
+          if(booking.status == 203){
+            setRedirect("/login");
+            alert(booking.data.message);
+          }
         }
       },
     });

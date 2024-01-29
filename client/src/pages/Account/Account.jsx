@@ -15,9 +15,11 @@ export default function Account() {
   }
 
   async function logout() {
-    await axios.post("/logout");
-    setRedirect("/");
-    setUser(null);
+    const logout = await axios.post("/logout");
+    if(logout.data.success){
+      setRedirect("/");
+      setUser(null);
+    }
   }
 
   if (!ready) {

@@ -7,14 +7,22 @@ export function UserContextProvider({ children }) {
   const [user, setUser] = useState(null);
   const [ready, setReady] = useState(false);
 
-  useEffect(() => {
+  console.log("in context api")
+  
+  async function fetchData() {
     if (!user) {
-      axios.get("/profile").then(({ data }) => {
-        setUser(data);
+      const user = await axios.get("/profile");
+      console.log("I am here---",user);
+      if (user.data.success) {
+        setUser(user.data.result);
         setReady(true);
-      });
+      }
     }
-  }, []);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [user]);
 
   return (
     <UserContext.Provider value={{ user, setUser, ready }}>

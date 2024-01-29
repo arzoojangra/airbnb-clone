@@ -110,20 +110,21 @@ app.get("/profile", (req, res) => {
   if (token) {
     jwt.verify(token, jwtKey, {}, async (err, user) => {
       if (err) {
-        throw err;
+        Responses.returnResponse(res,201,"Something went wrong! Please try again later.",false);
       }
       const { fName, lName, email, _id } = await User.findById(user.id);
-      res.json({ fName, lName, email, _id });
+      Responses.returnResponse(res,200,"User fetched!",true,{fName, lName, email, _id});
     });
   } else {
-    res.json(null);
+    Responses.returnResponse(res,201,"Unuthorized access!",false);
   }
 });
 
 // Logout API
 
 app.post("/logout", (req, res) => {
-  res.cookie("token", "").json(true);
+  res.cookie("token", "");
+  Responses.returnResponse(res,200,"User logged out!",true);
 });
 
 // Upload image using a link
@@ -284,7 +285,7 @@ app.post("/booking", async (req, res) => {
     req.body;
 
   jwt.verify(token, jwtKey, {}, async (err, userData) => {
-    if (err) Responses.returnResponse(res,201,"Something went wrong! Please try again later.",false);
+    if (err) Responses.returnResponse(res,203,"Please login with valid credentials!",false);
 
     const { id } = userData;
     try {
@@ -332,5 +333,11 @@ app.get("/fetchBooking/:id", async (req, res) => {
 });
 
 app.listen(4000, () => {
-  console.log("App started");
+  console.log("App started...");
+});
+
+// For restarting app
+process.on('uncaughtException', function (err) {
+  console.error(err);
+  console.log("App restarted...");
 });
