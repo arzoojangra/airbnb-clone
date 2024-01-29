@@ -4,21 +4,46 @@ import axios from "axios";
 import UploadPhoto from "./UploadPhoto";
 import AccountNavBar from "../Account/AccountNavBar";
 import { Navigate, useParams } from "react-router-dom";
+import {
+  AccomodationsInitialValues,
+  AccomodationsValidationSchema,
+} from "../../components/schemas/Validation";
+import { useFormik } from "formik";
 
 export default function AddPlace() {
   const { id } = useParams();
 
-  const [title, setTitle] = useState("");
-  const [address, setAddress] = useState("");
   const [addedPhotos, setAddedPhotos] = useState([]);
-  const [description, setDescription] = useState("");
   const [perks, setPerks] = useState("");
-  const [extraInfo, setExtraInfo] = useState("");
-  const [checkIn, setCheckIn] = useState("");
-  const [checkOut, setCheckOut] = useState("");
-  const [maxGuests, setMaxGuests] = useState("");
-  const [price, setPrice] = useState("");
   const [redirect, setRedirect] = useState(false);
+
+  const initialValues = AccomodationsInitialValues;
+  const validationSchema = AccomodationsValidationSchema;
+
+  const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
+    useFormik({
+      initialValues,
+      validationSchema,
+      onSubmit: async (values) => {
+        values.addedPhotos = addedPhotos;
+        values.perks = perks;
+
+        if (id) {
+          // update place
+          await axios.put("/updatePlace", {
+            id,
+            ...values,
+          });
+
+          setRedirect(true);
+        } else {
+          // add new place
+          await axios.post("/addPlace", values);
+
+          setRedirect(true);
+        }
+      },
+    });
 
   useEffect(() => {
     if (!id) return;
@@ -26,16 +51,16 @@ export default function AddPlace() {
     axios.get("/fetchPlace/" + id).then((response) => {
       const { data } = response;
 
-      setTitle(data.title);
-      setAddress(data.address);
+      values.title = data.title;
+      values.address = data.address;
       setAddedPhotos(data.photos);
-      setDescription(data.description);
+      values.description = data.description;
       setPerks(data.perks);
-      setExtraInfo(data.extraInfo);
-      setCheckIn(data.checkIn);
-      setCheckOut(data.checkOut);
-      setMaxGuests(data.maxGuests);
-      setPrice(data.price);
+      values.extraInfo = data.extraInfo;
+      values.checkIn = data.checkIn;
+      values.checkOut = data.checkOut;
+      values.maxGuests = data.maxGuests;
+      values.price = data.price;
     });
   }, [id]);
 
@@ -56,38 +81,6 @@ export default function AddPlace() {
     );
   }
 
-  async function savePlace(ev) {
-    ev.preventDefault();
-
-    const placeData = {
-      title,
-      address,
-      addedPhotos,
-      description,
-      perks,
-      extraInfo,
-      checkIn,
-      checkOut,
-      maxGuests,
-      price,
-    };
-
-    if (id) {
-      // update place
-      await axios.put("/updatePlace", {
-        id,
-        ...placeData,
-      });
-
-      setRedirect(true);
-    } else {
-      // add new place
-      await axios.post("/addPlace", placeData);
-
-      setRedirect(true);
-    }
-  }
-
   if (redirect) {
     return <Navigate to="/account/places" />;
   }
@@ -96,7 +89,7 @@ export default function AddPlace() {
     <>
       <AccountNavBar />
       <div className="px-20">
-        <form onSubmit={savePlace}>
+        <form onSubmit={handleSubmit}>
           {preInput(
             "Title",
             "Title for your place, should be short and attractive"
@@ -104,21 +97,29 @@ export default function AddPlace() {
           <input
             type="text"
             placeholder="Title, for example: My lovely apt"
-            value={title}
-            onChange={(ev) => {
-              setTitle(ev.target.value);
-            }}
+            value={values.title}
+            id="title"
+            name="title"
+            onChange={handleChange}
+            onBlur={handleBlur}
           />
+          {errors.title && touched.title ? (
+            <p className="text-primary py-1 px-3">{errors.title}</p>
+          ) : null}
 
           {preInput("Address", "Address for this place")}
           <input
             type="text"
             placeholder="Address"
-            value={address}
-            onChange={(ev) => {
-              setAddress(ev.target.value);
-            }}
+            value={values.address}
+            id="address"
+            name="address"
+            onChange={handleChange}
+            onBlur={handleBlur}
           />
+          {errors.address && touched.address ? (
+            <p className="text-primary py-1 px-3">{errors.address}</p>
+          ) : null}
 
           {preInput("Photos", "Because more = better")}
           <UploadPhoto addedPhotos={addedPhotos} onChange={setAddedPhotos} />
@@ -126,11 +127,15 @@ export default function AddPlace() {
           {preInput("Description", "Tell us something about this place...")}
 
           <textarea
-            value={description}
-            onChange={(ev) => {
-              setDescription(ev.target.value);
-            }}
+            value={values.description}
+            id="description"
+            name="description"
+            onChange={handleChange}
+            onBlur={handleBlur}
           />
+          {errors.description && touched.description ? (
+            <p className="text-primary py-1 px-3">{errors.description}</p>
+          ) : null}
 
           {preInput("Perks and facilities", "What does this place offers")}
           <div className="grid gap-2 mt-2 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
@@ -139,11 +144,15 @@ export default function AddPlace() {
 
           {preInput("Extra Info", "House rules, etc.")}
           <textarea
-            value={extraInfo}
-            onChange={(ev) => {
-              setExtraInfo(ev.target.value);
-            }}
+            value={values.extraInfo}
+            id="extraInfo"
+            name="extraInfo"
+            onChange={handleChange}
+            onBlur={handleBlur}
           />
+          {errors.extraInfo && touched.extraInfo ? (
+            <p className="text-primary py-1 px-3">{errors.extraInfo}</p>
+          ) : null}
 
           {preInput(
             "Check in & check out time",
@@ -156,11 +165,15 @@ export default function AddPlace() {
               <input
                 type="text"
                 placeholder="14:00"
-                value={checkIn}
-                onChange={(ev) => {
-                  setCheckIn(ev.target.value);
-                }}
+                value={values.checkIn}
+                id="checkIn"
+                name="checkIn"
+                onChange={handleChange}
+                onBlur={handleBlur}
               />
+              {errors.checkIn && touched.checkIn ? (
+                <p className="text-primary py-1 px-3">{errors.checkIn}</p>
+              ) : null}
             </div>
 
             <div>
@@ -168,11 +181,15 @@ export default function AddPlace() {
               <input
                 type="text"
                 placeholder="20:00"
-                value={checkOut}
-                onChange={(ev) => {
-                  setCheckOut(ev.target.value);
-                }}
+                value={values.checkOut}
+                id="checkOut"
+                name="checkOut"
+                onChange={handleChange}
+                onBlur={handleBlur}
               />
+              {errors.checkOut && touched.checkOut ? (
+                <p className="text-primary py-1 px-3">{errors.checkOut}</p>
+              ) : null}
             </div>
 
             <div>
@@ -181,11 +198,15 @@ export default function AddPlace() {
                 type="number"
                 min={1}
                 placeholder="02"
-                value={maxGuests}
-                onChange={(ev) => {
-                  setMaxGuests(ev.target.value);
-                }}
+                value={values.maxGuests}
+                id="maxGuests"
+                name="maxGuests"
+                onChange={handleChange}
+                onBlur={handleBlur}
               />
+              {errors.maxGuests && touched.maxGuests ? (
+                <p className="text-primary py-1 px-3">{errors.maxGuests}</p>
+              ) : null}
             </div>
 
             <div>
@@ -194,11 +215,15 @@ export default function AddPlace() {
                 type="number"
                 min={100}
                 placeholder="1000"
-                value={price}
-                onChange={(ev) => {
-                  setPrice(ev.target.value);
-                }}
+                value={values.price}
+                id="price"
+                name="price"
+                onChange={handleChange}
+                onBlur={handleBlur}
               />
+              {errors.price && touched.price ? (
+                <p className="text-primary py-1 px-3">{errors.price}</p>
+              ) : null}
             </div>
           </div>
 

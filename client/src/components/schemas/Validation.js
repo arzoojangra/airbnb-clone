@@ -32,3 +32,25 @@ export const LoginValidationSchema = Yup.object({
     .required("E-mail can not be empty!"),
   password: Yup.string().required("Please enter the password!"),
 });
+
+// Add accomodations validations
+export const AccomodationsInitialValues = {
+  title: "",
+  address: "",
+  description: "",
+  extraInfo: "",
+  checkIn: "",
+  checkOut: "",
+  maxGuests: "",
+  price: "",
+};
+
+export const AccomodationsValidationSchema = Yup.object({
+  title: Yup.string().required("Title can not be empty!"),
+  address: Yup.string().required("Please add the address!"),
+  extraInfo: Yup.string(),
+  checkIn: Yup.string().required("Check in time can not be empty!"),
+  checkOut: Yup.string().required("Check out can not be empty!"),
+  maxGuests: Yup.number().required("Please add the max number of guests!"),
+  price: Yup.number().required("Price can not be empty!"),
+});

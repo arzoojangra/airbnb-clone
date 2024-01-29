@@ -18,7 +18,7 @@ export default function PlacesPage() {
     <>
       <AccountNavBar />
 
-      {!places.length && (
+      {/* {!places.length && ( */}
         <div className="px-3">
           <div className="text-center">
             <NavLink
@@ -43,9 +43,9 @@ export default function PlacesPage() {
             </NavLink>
           </div>
         </div>
-      )}
+      {/* )} */}
 
-      <div className="px-20">
+      <div className="px-20 mt-5">
         {places.length > 0 &&
           places.map((place) => (
             <Link

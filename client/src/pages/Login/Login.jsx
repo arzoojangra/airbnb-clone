@@ -59,6 +59,7 @@ export default function Login() {
           {errors.email && touched.email ? (
             <p className="text-primary py-1 px-3">{errors.email}</p>
           ) : null}
+
           <input
             type="password"
             id="password"
@@ -71,11 +72,13 @@ export default function Login() {
           {errors.password && touched.password ? (
             <p className="text-primary py-1 px-3">{errors.password}</p>
           ) : null}
+
           {!success ? (
             <div className="text-primary py-1 px-3">{message}</div>
           ) : (
             <></>
           )}
+
           <button type="submit" className="primary">
             Login
           </button>

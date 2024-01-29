@@ -77,6 +77,7 @@ export default function Register() {
           {errors.fname && touched.fname ? (
             <p className="text-primary py-1 px-3">{errors.fname}</p>
           ) : null}
+
           <input
             type="text"
             id="lname"
@@ -89,6 +90,7 @@ export default function Register() {
           {errors.lname && touched.lname ? (
             <p className="text-primary py-1 px-3">{errors.lname}</p>
           ) : null}
+
           <input
             type="email"
             id="email"
@@ -101,11 +103,13 @@ export default function Register() {
           {errors.email && touched.email ? (
             <p className="text-primary py-1 px-3">{errors.email}</p>
           ) : null}
+
           {!success && statusCode == 203 ? (
             <div className="text-primary py-1 px-3">{message}</div>
           ) : (
             <></>
           )}
+
           <input
             type="password"
             id="password"
@@ -118,6 +122,7 @@ export default function Register() {
           {errors.password && touched.password ? (
             <p className="text-primary py-1 px-3">{errors.password}</p>
           ) : null}
+
           <button type="submit" className="primary">
             Register
           </button>
