@@ -116,7 +116,7 @@ app.get("/profile", (req, res) => {
       Responses.returnResponse(res,200,"User fetched!",true,{fName, lName, email, _id});
     });
   } else {
-    Responses.returnResponse(res,201,"Unuthorized access!",false);
+    Responses.returnResponse(res,201,"Unauthorized access!",false);
   }
 });
 
@@ -330,6 +330,47 @@ app.get("/fetchBooking/:id", async (req, res) => {
   const { id } = req.params;
 
   res.json(await Booking.findById(id).populate("place"));
+});
+
+// search for places
+
+app.post("/fetch/places", async (req, res) => {
+  try {
+    const { place, minPrice, maxPrice, numberOfGuests } = req.body;
+
+    const valueArray = [];
+    if (place) {
+      valueArray.push({ address: { $regex: place } });
+    }
+
+    if (minPrice) {
+      if (maxPrice) {
+        valueArray.push({ price: { $gte: minPrice, $lte: maxPrice } });
+      } else {
+        valueArray.push({ price: { $gte: minPrice } });
+      }
+    } else if (maxPrice) {
+      if (minPrice) {
+        valueArray.push({ price: { $gte: minPrice, $lte: maxPrice } });
+      } else {
+        valueArray.push({ price: { $lte: maxPrice } });
+      }
+    }
+
+    if (numberOfGuests) {
+      valueArray.push({ maxGuests: { $gte: numberOfGuests } });
+    }
+
+    var query = { $and: valueArray };
+
+    if (!place && !minPrice && !maxPrice && !numberOfGuests) {
+      query = {};
+    }
+    const searchResult = await Place.find(query);
+    Responses.returnResponse(res,200,"Search successful!.",true,searchResult);
+  } catch (error) {
+    Responses.returnResponse(res,201,"Something went wrong! Please try again later.",false);
+  }
 });
 
 app.listen(4000, () => {

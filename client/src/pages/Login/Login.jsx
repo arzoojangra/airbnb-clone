@@ -25,7 +25,7 @@ export default function Login() {
         try {
           const response = await axios.post("/login", values);
           if (response.data.success) {
-            setUser(response.data);
+            setUser(response.data.result);
             setRedirect(true);
             setSuccess(true);
           } else {

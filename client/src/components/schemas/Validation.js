@@ -71,3 +71,18 @@ export const BookingValidationSchema = Yup.object({
   name: Yup.string().required("please add you name!"),
   phone: Yup.string().required("Mobile can not be empty!"),
 });
+
+// Search bar validations
+export const SearchBarInitialValues = {
+  place: "",
+  minPrice: "",
+  maxPrice: "",
+  numberOfGuests: "",
+};
+
+export const SearchBarValidationSchema = Yup.object({
+  place: Yup.string("Please add valid place name"),
+  minPrice: Yup.number("Please add valid minimum price").positive().min(1),
+  maxPrice: Yup.number("Please add valid maximum price").positive().min(1),
+  numberOfGuests: Yup.number("Please add valid number of guests").positive().min(1),
+});

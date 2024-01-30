@@ -12,6 +12,7 @@ import AddPlace from "./pages/Places/AddPlace";
 import PlaceDetailsPage from "./pages/Places/PlaceDetailsPage";
 import Bookings from "./pages/Bookings/Bookings";
 import BookingDetails from "./pages/Bookings/BookingDetails";
+import SearchResult from "./pages/Index/SearchResult";
 
 axios.defaults.baseURL = "http://localhost:4000";
 axios.defaults.withCredentials = true;
@@ -31,6 +32,7 @@ export default function App() {
           <Route path="/account/places/new" element={<AddPlace />} />
           <Route path="/account/places/:id" element={<AddPlace />} />
           <Route path="/place/:id" element={<PlaceDetailsPage />} />
+          <Route path="/search/results" element={<SearchResult />} />
         </Route>
       </Routes>
     </UserContextProvider>
