@@ -135,20 +135,18 @@ app.post("/api/login", async (req, res) => {
 
 // Fetch User API
 
-app.get("/api/profile", (req, res) => {
-  mongoose.connect(process.env.MONGO_URL); //.env
+app.get("/profile", (req, res) => {
   const { token } = req.cookies;
-
   if (token) {
     jwt.verify(token, jwtKey, {}, async (err, user) => {
       if (err) {
-        Responses.returnResponse(res,201,"Something went wrong! Please try again later.",false);
+        throw err;
       }
       const { fName, lName, email, _id } = await User.findById(user.id);
-      Responses.returnResponse(res,200,"User fetched!",true,{fName, lName, email, _id});
+      res.json({ fName, lName, email, _id });
     });
   } else {
-    Responses.returnResponse(res,201,"Unauthorized access!",false);
+    res.json(null);
   }
 });
 

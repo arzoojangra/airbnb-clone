@@ -12,6 +12,13 @@ export default function Index(props) {
     });
   }, []);
 
+  if (!places.length)
+    return (
+      <div className="px-25 py-14 mt-10 text-xl text-center text-gray-500">
+        Loading...
+      </div>
+    );
+
   return (
     <div className="grid gap-6 gap-y-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 px-20 py-14">
       {places.length > 0 &&

@@ -16,14 +16,16 @@ export default function Account() {
 
   async function logout() {
     const logout = await axios.post("/logout");
-    if(logout.data.success){
+    if (logout.data.success) {
       setRedirect("/");
       setUser(null);
     }
   }
 
   if (!ready) {
-    return <>Loading...</>;
+    <div className="px-25 py-14 mt-10 text-xl text-center text-gray-500">
+      Loading...
+    </div>;
   }
 
   if (ready && !user && !redirect) {
