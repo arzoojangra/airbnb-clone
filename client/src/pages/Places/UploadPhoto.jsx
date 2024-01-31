@@ -3,21 +3,30 @@ import { useState } from "react";
 
 export default function UploadPhoto({ addedPhotos, onChange }) {
   const [photoLink, setPhotoLink] = useState("");
+  const [err, setErr] = useState(false);
+  const [errMessage, setErrMessage] = useState("");
 
   async function addPhotoByLink(ev) {
+    setErr(false);
     ev.preventDefault();
-    const { data: filename } = await axios.post("/upload-by-link", {
+    const response = await axios.post("/upload-by-link", {
       link: photoLink,
     });
 
-    onChange((prev) => {
-      return [...prev, filename];
-    });
+    if (response.data.success) {
+      onChange((prev) => {
+        return [...prev, response.data.result];
+      });
+    } else {
+      setErr(true);
+      setErrMessage(response.data.message);
+    }
 
     setPhotoLink("");
   }
 
   async function uploadPhoto(ev) {
+    setErr(false);
     const files = ev.target.files;
     const data = new FormData();
 
@@ -25,13 +34,18 @@ export default function UploadPhoto({ addedPhotos, onChange }) {
       data.append("photos", files[i]);
     }
 
-    const { data: filenames } = await axios.post("/upload", data, {
+    const response = await axios.post("/upload", data, {
       headers: { "Content-type": "multipart/form-data" },
     });
 
-    onChange((prev) => {
-      return [...prev, ...filenames];
-    });
+    if (response.data.success) {
+      onChange((prev) => {
+        return [...prev, response.data.result[0]];
+      });
+    } else {
+      setErr(true);
+      setErrMessage(response.data.message);
+    }
   }
 
   function removePhoto(filename, ev) {
@@ -62,6 +76,9 @@ export default function UploadPhoto({ addedPhotos, onChange }) {
           Add&nbsp;photo
         </button>
       </div>
+      {err && errMessage ? (
+        <p className="text-primary py-1 px-3">{errMessage}</p>
+      ) : null}
 
       <div className="mt-2 grid gap-2 grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
         {addedPhotos.length > 0 &&
@@ -69,7 +86,11 @@ export default function UploadPhoto({ addedPhotos, onChange }) {
             <div className="h-32 flex relative" key={link}>
               <img
                 className="rounded-2xl w-full object-cover position-center"
-                src={`http://localhost:4000/uploads/` + link}
+                src={
+                  link.includes("https://")
+                    ? link
+                    : `http://localhost:4000/uploads/` + link
+                }
                 alt=""
               />
               <button
@@ -151,6 +172,9 @@ export default function UploadPhoto({ addedPhotos, onChange }) {
           />
           Upload
         </label>
+        {err && errMessage ? (
+          <p className="text-primary py-1 px-3">{errMessage}</p>
+        ) : null}
       </div>
     </>
   );

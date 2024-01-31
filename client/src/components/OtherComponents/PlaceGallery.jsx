@@ -38,7 +38,7 @@ export default function PlaceGallery({ placeDetails }) {
             placeDetails.photos.map((photo) => (
               <div>
                 <img
-                  src={"http://localhost:4000/uploads/" + photo}
+                  src={photo.includes("https://") ? photo : `http://localhost:4000/uploads/` + photo}
                   alt=""
                   className="h-1/5 w-1/2 mx-auto rounded-xl"
                 />

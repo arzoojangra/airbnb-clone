@@ -14,9 +14,10 @@ import Bookings from "./pages/Bookings/Bookings";
 import BookingDetails from "./pages/Bookings/BookingDetails";
 import SearchResult from "./pages/Index/SearchResult";
 
-axios.defaults.baseURL = "http://localhost:4000";
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 axios.defaults.withCredentials = true;
 
+console.log(axios.defaults.baseURL);
 export default function App() {
   return (
     <UserContextProvider>
