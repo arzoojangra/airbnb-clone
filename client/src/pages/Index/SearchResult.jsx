@@ -1,10 +1,19 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from "react-router-dom";
 import React from "react";
-import PlaceImg from '../../components/OtherComponents/PlaceImg';
+import PlaceImg from "../../components/OtherComponents/PlaceImg";
 
 function SearchResult() {
   const location = useLocation();
   const places = location.state?.responseData || null;
+
+  if (!places.length) {
+    return (
+      <div className="px-25 py-14 mt-10 text-xl text-center text-gray-500">
+        Sorry no results found for you search...{" "}
+        <p>You can try again searching...</p>
+      </div>
+    );
+  }
   return (
     <div className="grid gap-6 gap-y-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 px-20 py-14">
       {places.length > 0 &&
