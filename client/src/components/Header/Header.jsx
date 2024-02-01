@@ -126,7 +126,7 @@ export default function Header() {
                       clipRule="evenodd"
                     />
                   </svg>
-                  {!!user && <div> {user.fName} </div>}
+                  {!!user && <div> {user.fname} </div>}
                 </Menu.Button>
               </div>
               <Transition

@@ -16,6 +16,7 @@ export default function Account() {
 
   async function logout() {
     const logout = await axios.post("/logout");
+    console.log(logout);
     if (logout.data.success) {
       setRedirect("/");
       setUser(null);
@@ -41,7 +42,7 @@ export default function Account() {
       <AccountNavBar subPage={subPage} />
 
       <div className="text-center max-w-lg mx-auto">
-        Logged in as {user.fName + " " + user.lName} ({user.email})
+        Logged in as {user.fname + " " + user.lname} ({user.email})
         <button className="primary max-w-sm mt-3" onClick={logout}>
           Logout
         </button>

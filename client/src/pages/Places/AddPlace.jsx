@@ -228,7 +228,7 @@ export default function AddPlace() {
           </div>
 
           <div className="text-center mt-2">
-            <button className="primary my-4 max-w-xs font-bold text-base">
+            <button className="primary my-4 max-w-xs font-bold text-base" type="submit">
               Save
             </button>
           </div>

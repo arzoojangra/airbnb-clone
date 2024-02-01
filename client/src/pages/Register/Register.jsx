@@ -30,12 +30,14 @@ export default function Register() {
       initialValues,
       validationSchema,
       onSubmit: async (values) => {
+        console.log(values);
         try {
           var registration = await axios.post("/register", values);
           if (!registration.data.success) {
             setMessage(registration.data.message);
             setStatusCode(registration.status);
           } else {
+            console.log(registration);
             setMessage("Registration successful! You can now login!");
             setSuccess(true);
             setSeconds(5);

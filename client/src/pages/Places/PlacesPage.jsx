@@ -14,6 +14,8 @@ export default function PlacesPage() {
     });
   }, []);
 
+  console.log(places);
+
   return (
     <>
       <AccountNavBar />
