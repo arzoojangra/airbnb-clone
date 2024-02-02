@@ -62,9 +62,10 @@ export default function PlacesPage() {
                 />
               </div>
 
-              <div className="grow-0 shrink p-2">
+              <div className="grow-0 shrink p-2 overflow-hidden">
                 <h2 className="text-xl font-semibold">{place.title}</h2>
-                <p className="text-sm mt-2 ">{place.description}</p>
+                <p className="text-sm mt-3 truncate overflow-ellipsis ">{place.description}</p>
+                <p className="text-sm mt-3 ">{"\u20B9"}{" "}{place.price}</p>
               </div>
             </Link>
           ))}
