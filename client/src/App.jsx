@@ -13,6 +13,7 @@ import PlaceDetailsPage from "./pages/Places/PlaceDetailsPage";
 import Bookings from "./pages/Bookings/Bookings";
 import BookingDetails from "./pages/Bookings/BookingDetails";
 import SearchResult from "./pages/Index/SearchResult";
+import NotFound from "./pages/NotFound";
 
 axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 axios.defaults.withCredentials = true;
@@ -34,6 +35,7 @@ export default function App() {
           <Route path="/account/places/:id" element={<AddPlace />} />
           <Route path="/place/:id" element={<PlaceDetailsPage />} />
           <Route path="/search/results" element={<SearchResult />} />
+          <Route path="/*" element={<NotFound />} />
         </Route>
       </Routes>
     </UserContextProvider>

@@ -71,7 +71,7 @@ export default function PlaceGallery({ placeDetails }) {
               <PlaceImg
                 place={placeDetails}
                 classname="aspect-square cursor-pointer object-cover relative top-2"
-                index={1}
+                index={2}
               />
             </div>
           </div>
