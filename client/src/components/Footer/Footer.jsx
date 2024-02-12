@@ -25,6 +25,10 @@ export default function Footer() {
           <p className="py-2 cursor-pointer">How to Host responsibly</p>
         </div>
       </div>
+      <div className="mt-5">
+        © 2023 Airbnb-Clone | All rights reserved | Designed and developed by{" "}
+        <b>Arzoo Jangra</b>
+      </div>
     </div>
   );
 }

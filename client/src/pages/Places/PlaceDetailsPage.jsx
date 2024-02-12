@@ -59,11 +59,11 @@ export default function PlaceDetailsPage() {
           ))}
         </div>
       </div>
-      <div className="mx-12 mb-12">
+      <div className="mx-12">
         <h2 className="text-gray-700 font-semibold text-2xl mb-2">
           Extra Info
         </h2>
-        <div className="text-gray-600">{placeDetails.extraInfo}</div>
+        <div className="text-gray-600 pb-12">{placeDetails.extraInfo}</div>
       </div>
     </div>
   );

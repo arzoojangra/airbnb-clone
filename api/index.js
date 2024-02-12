@@ -30,7 +30,7 @@ app.use("/uploads", express.static(__dirname + "/uploads"));
 app.use(
   cors({
     credentials: true,
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173", "https://arzoojangra-airbnb-clone.vercel.app"],
   })
 );
 
@@ -135,7 +135,7 @@ app.post("/api/login", async (req, res) => {
 
 // Fetch User API
 
-app.get("/profile", (req, res) => {
+app.get("/api/profile", (req, res) => {
   const { token } = req.cookies;
   if (token) {
     jwt.verify(token, jwtKey, {}, async (err, user) => {
@@ -388,7 +388,7 @@ app.post("/api/fetch/places", async (req, res) => {
 
     const valueArray = [];
     if (place) {
-      valueArray.push({ address: { $regex: place } });
+      valueArray.push({ address: { $regex: place, $options: 'i' } });
     }
 
     if (minPrice) {
