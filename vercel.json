@@ -1,5 +1,5 @@
 {
-  "buildCommand": "cd client && yarn install && npx vite build --config vite.config.js",
+  "buildCommand": "cd client && yarn && yarn build",
   "outputDirectory": "client/dist",
   "framework": "vite",
   "rewrites": [
