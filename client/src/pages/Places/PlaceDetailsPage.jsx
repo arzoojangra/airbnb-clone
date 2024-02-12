@@ -42,8 +42,16 @@ export default function PlaceDetailsPage() {
           </div>
           <BookingWidget place={placeDetails} />
         </div>
+      <div>
+        <div className="font-semibold text-xl md:text-3xl mb-2 mx-3">Perks and Facilities</div>
+      {placeDetails.perks.map((item, index) => (
+        <li className="mx-3" key={index}>
+          {item}
+        </li>
+      ))}
       </div>
-      <div className="mx-12 my-6">
+      </div>
+      <div className="mx-12 mb-12">
         <h2 className="text-gray-700 font-semibold text-2xl mb-2">
           Extra Info
         </h2>
