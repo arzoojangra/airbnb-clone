@@ -16,7 +16,11 @@ export default function PlaceDetailsPage() {
   }, [id]);
 
   if (!placeDetails) {
-    return <div>Loading...</div>;
+    return (
+      <div className="px-25 py-14 mt-10 text-xl text-center text-gray-500">
+        Loading...
+      </div>
+    );
   }
 
   return (
@@ -31,7 +35,9 @@ export default function PlaceDetailsPage() {
         <div className="mx-2 my-8 grid gap-8 grid-cols-1 md:grid-cols-[2fr_1fr]">
           <div className="border border-gray-400 py-2 px-4 rounded-2xl">
             <div className="my-4">
-              <h2 className="font-semibold text-xl md:text-3xl mb-2">Description</h2>
+              <h2 className="font-semibold text-xl md:text-3xl mb-2">
+                Description
+              </h2>
               {placeDetails.description}
             </div>
             <b> Check-in Time: </b> {placeDetails.checkIn}:00
@@ -42,14 +48,16 @@ export default function PlaceDetailsPage() {
           </div>
           <BookingWidget place={placeDetails} />
         </div>
-      <div>
-        <div className="font-semibold text-xl md:text-3xl mb-2 mx-3">Perks and Facilities</div>
-      {placeDetails.perks.map((item, index) => (
-        <li className="mx-3" key={index}>
-          {item}
-        </li>
-      ))}
-      </div>
+        <div>
+          <div className="font-semibold text-xl md:text-3xl mb-2 mx-3">
+            Perks and Facilities
+          </div>
+          {placeDetails.perks.map((item, index) => (
+            <li className="mx-3" key={index}>
+              {item}
+            </li>
+          ))}
+        </div>
       </div>
       <div className="mx-12 mb-12">
         <h2 className="text-gray-700 font-semibold text-2xl mb-2">

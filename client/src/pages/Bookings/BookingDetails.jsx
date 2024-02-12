@@ -20,7 +20,11 @@ export default function BookingDetails() {
   }, [id]);
 
   if (!bookingDetails) {
-    return <>Loading...</>;
+    return (
+      <div className="px-25 py-14 mt-10 text-xl text-center text-gray-500">
+        Loading...
+      </div>
+    );
   }
 
   return (
