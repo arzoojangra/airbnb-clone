@@ -10,6 +10,18 @@ import {
 import { useFormik } from "formik";
 
 export default function BookingWidget({ place }) {
+  const [minDate, setMinDate] = useState(() => {
+    // Calculate tomorrow's date
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    return tomorrow.toISOString().split('T')[0];
+  });
+  const [minDate2, setMinDate2] = useState(() => {
+    // Calculate tomorrow's date
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 2);
+    return tomorrow.toISOString().split('T')[0];
+  });
   const initialValues = BookingInitialValues;
   const validationSchema = BookingValidationSchema;
 
@@ -39,7 +51,7 @@ export default function BookingWidget({ place }) {
 
   useEffect(() => {
     if (user) {
-      values.name = user.fName + " " + user.lName;
+      values.name = user.fname + " " + user.lname;
     }
   }, [user]);
 
@@ -72,6 +84,7 @@ export default function BookingWidget({ place }) {
               name="checkIn"
               onChange={handleChange}
               onBlur={handleBlur}
+              min={minDate}
             />
             {errors.checkIn && touched.checkIn ? (
               <p className="text-primary py-1">{errors.checkIn}</p>
@@ -87,6 +100,7 @@ export default function BookingWidget({ place }) {
               name="checkOut"
               onChange={handleChange}
               onBlur={handleBlur}
+              min={minDate2}
             />
             {errors.checkOut && touched.checkOut ? (
               <p className="text-primary py-1">{errors.checkOut}</p>

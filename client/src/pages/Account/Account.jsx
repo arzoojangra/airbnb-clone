@@ -43,7 +43,7 @@ export default function Account() {
 
       <div className="text-center max-w-lg mx-auto">
         Logged in as {user.fname + " " + user.lname} ({user.email})
-        <button className="primary max-w-sm mt-3" onClick={logout}>
+        <button className="primary max-w-sm my-3" onClick={logout}>
           Logout
         </button>
       </div>
